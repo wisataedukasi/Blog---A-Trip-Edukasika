@@ -185,7 +185,7 @@ WhatsApp: ${formData.whatsapp}`
               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
                 <Button
                   size="lg"
-                  className="bg-white text-[#FEA62D] hover:bg-gray-100 font-semibold px-8 py-4 text-lg"
+                  className="bg-white text-[#FEA62D] hover:bg-gray-100 font-semibold px-8 py-4 text-lg animate-pulse-slow" // Added pulse animation
                   onClick={() => document.getElementById("booking")?.scrollIntoView({ behavior: "smooth" })}
                 >
                   <Phone className="mr-2 h-5 w-5" />
@@ -240,52 +240,56 @@ WhatsApp: ${formData.whatsapp}`
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-            {[
-              {
-                icon: BookOpen,
-                title: "Mengenal Sejarah & Filosofi",
-                description: "Pelajari sejarah dan filosofi gerabah khas Jogja dari ahlinya",
-              },
-              {
-                icon: Users,
-                title: "Tur Eksklusif Workshop",
-                description: "Kunjungi langsung workshop pengrajin lokal berpengalaman",
-              },
-              {
-                icon: Heart,
-                title: "Praktik Langsung",
-                description: "Rasakan sensasi membentuk gerabah dengan tangan sendiri",
-              },
-              {
-                icon: Palette,
-                title: "Kreativitas Tanpa Batas",
-                description: "Warnai dan hias gerabah sesuai dengan kreativitas Anda",
-              },
-              {
-                icon: Award,
-                title: "Karya Bisa Dibawa Pulang",
-                description: "Hasil karya Anda menjadi kenang-kenangan berharga",
-              },
-              {
-                icon: CheckCircle,
-                title: "Bimbingan Ahli",
-                description: "Dibimbing langsung oleh pengrajin gerabah berpengalaman",
-              },
-            ].map((feature, index) => (
-              <Card
-                key={index}
-                className="border-0 shadow-lg hover:shadow-xl transition-shadow duration-300 bg-white dark:bg-gray-800"
-              >
-                <CardContent className="p-6 text-center">
-                  <div className="w-16 h-16 bg-[#FEA62D]/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <feature.icon className="h-8 w-8 text-[#FEA62D]" />
-                  </div>
-                  <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-50 mb-3">{feature.title}</h3>
-                  <p className="text-gray-600 dark:text-gray-300">{feature.description}</p>
-                </CardContent>
-              </Card>
-            ))}
+          <div className="animate-fade-in-up">
+            {" "}
+            {/* Applied fade-in-up animation */}
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+              {[
+                {
+                  icon: BookOpen,
+                  title: "Mengenal Sejarah & Filosofi",
+                  description: "Pelajari sejarah dan filosofi gerabah khas Jogja dari ahlinya",
+                },
+                {
+                  icon: Users,
+                  title: "Tur Eksklusif Workshop",
+                  description: "Kunjungi langsung workshop pengrajin lokal berpengalaman",
+                },
+                {
+                  icon: Heart,
+                  title: "Praktik Langsung",
+                  description: "Rasakan sensasi membentuk gerabah dengan tangan sendiri",
+                },
+                {
+                  icon: Palette,
+                  title: "Kreativitas Tanpa Batas",
+                  description: "Warnai dan hias gerabah sesuai dengan kreativitas Anda",
+                },
+                {
+                  icon: Award,
+                  title: "Karya Bisa Dibawa Pulang",
+                  description: "Hasil karya Anda menjadi kenang-kenangan berharga",
+                },
+                {
+                  icon: CheckCircle,
+                  title: "Bimbingan Ahli",
+                  description: "Dibimbing langsung oleh pengrajin gerabah berpengalaman",
+                },
+              ].map((feature, index) => (
+                <Card
+                  key={index}
+                  className="border-0 shadow-lg hover:shadow-xl transition-shadow duration-300 bg-white dark:bg-gray-800"
+                >
+                  <CardContent className="p-6 text-center">
+                    <div className="w-16 h-16 bg-[#FEA62D]/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <feature.icon className="h-8 w-8 text-[#FEA62D]" />
+                    </div>
+                    <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-50 mb-3">{feature.title}</h3>
+                    <p className="text-gray-600 dark:text-gray-300">{feature.description}</p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -302,7 +306,9 @@ WhatsApp: ${formData.whatsapp}`
             </p>
           </div>
 
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="grid lg:grid-cols-2 gap-12 items-center animate-fade-in-up">
+            {" "}
+            {/* Applied fade-in-up animation */}
             <div>
               <Image
                 src="/images/pottery-class-7.jpg"
@@ -367,7 +373,9 @@ WhatsApp: ${formData.whatsapp}`
             </p>
           </div>
 
-          <div className="grid lg:grid-cols-3 gap-8">
+          <div className="grid lg:grid-cols-3 gap-8 animate-fade-in-up">
+            {" "}
+            {/* Applied fade-in-up animation */}
             {/* Paket Keluarga */}
             <Card className="relative border-2 border-[#FEA62D] shadow-xl hover:shadow-2xl transition-shadow duration-300 bg-white dark:bg-gray-800">
               <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
@@ -408,7 +416,6 @@ WhatsApp: ${formData.whatsapp}`
                 </Button>
               </CardContent>
             </Card>
-
             {/* Paket Pelajar */}
             <Card className="relative border-2 border-green-500 shadow-xl hover:shadow-2xl transition-shadow duration-300 bg-white dark:bg-gray-800">
               <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
@@ -447,7 +454,6 @@ WhatsApp: ${formData.whatsapp}`
                 </Button>
               </CardContent>
             </Card>
-
             {/* Paket Interaktif */}
             <Card className="border-2 border-blue-500 shadow-xl hover:shadow-2xl transition-shadow duration-300 bg-white dark:bg-gray-800">
               <CardContent className="p-8">
@@ -503,7 +509,9 @@ WhatsApp: ${formData.whatsapp}`
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12 animate-fade-in-up">
+            {" "}
+            {/* Applied fade-in-up animation */}
             {[
               { src: "/images/pottery-class-1.jpg", alt: "Siswa belajar membuat gerabah" },
               { src: "/images/pottery-class-3.jpg", alt: "Workshop gerabah interaktif" },
@@ -548,7 +556,9 @@ WhatsApp: ${formData.whatsapp}`
             </p>
           </div>
 
-          <div className="grid lg:grid-cols-3 gap-8">
+          <div className="grid lg:grid-cols-3 gap-8 animate-fade-in-up">
+            {" "}
+            {/* Applied fade-in-up animation */}
             {[
               {
                 name: "Ibu Santi",
@@ -607,7 +617,9 @@ WhatsApp: ${formData.whatsapp}`
             </p>
           </div>
 
-          <div className="max-w-3xl mx-auto">
+          <div className="max-w-3xl mx-auto animate-fade-in-up">
+            {" "}
+            {/* Applied fade-in-up animation */}
             <Accordion type="single" collapsible className="w-full">
               <AccordionItem value="item-1">
                 <AccordionTrigger className="text-lg font-semibold text-gray-800 dark:text-gray-50 hover:no-underline">
@@ -671,7 +683,9 @@ WhatsApp: ${formData.whatsapp}`
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 animate-fade-in-up">
+            {" "}
+            {/* Applied fade-in-up animation */}
             {latestBlogPosts.map((post) => (
               <Card key={post.sys.id} className="border-0 shadow-lg bg-white dark:bg-gray-800">
                 <Image
@@ -725,7 +739,9 @@ WhatsApp: ${formData.whatsapp}`
               </p>
             </div>
 
-            <div className="grid lg:grid-cols-2 gap-12 items-start">
+            <div className="grid lg:grid-cols-2 gap-12 items-start animate-fade-in-up">
+              {" "}
+              {/* Applied fade-in-up animation */}
               <Card className="border-0 shadow-xl bg-white dark:bg-gray-800">
                 <CardContent className="p-8">
                   <form onSubmit={handleSubmit} className="space-y-6">
@@ -810,7 +826,6 @@ WhatsApp: ${formData.whatsapp}`
                   </form>
                 </CardContent>
               </Card>
-
               <div className="space-y-6">
                 <Card className="border-0 shadow-lg bg-white dark:bg-gray-800">
                   <CardContent className="p-6">
@@ -876,7 +891,9 @@ WhatsApp: ${formData.whatsapp}`
               Kunjungi workshop kami di jantung Desa Wisata Gerabah Kasongan, Yogyakarta.
             </p>
           </div>
-          <div className="relative w-full h-[400px] rounded-xl overflow-hidden shadow-xl">
+          <div className="relative w-full h-[400px] rounded-xl overflow-hidden shadow-xl animate-fade-in-up">
+            {" "}
+            {/* Applied fade-in-up animation */}
             <iframe
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3952.0000000000005!2d110.3456789!3d-7.854321!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zM8KwNTEnMzcuMSJTIDExMMKwMjAnNDQuNCJF!5e0!3m2!1sen!2sid!4v1678901234567!5m2!1sen!2sid"
               width="100%"
