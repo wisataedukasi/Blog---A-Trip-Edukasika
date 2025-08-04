@@ -16,7 +16,6 @@ import {
   Heart,
   Palette,
   BookOpen,
-  Star,
   CheckCircle,
   ArrowRight,
   Play,
@@ -26,6 +25,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { ModeToggle } from "@/components/mode-toggle"
+import { TestimonialCarousel } from "@/components/testimonial-carousel" // Import the new component
 
 // Placeholder for blog post type and data
 interface BlogPost {
@@ -111,6 +111,45 @@ export default function ATripEdukasikaClient() {
   })
   const [loading, setLoading] = useState(true)
   const [latestBlogPosts, setLatestBlogPosts] = useState<BlogPost[]>([])
+
+  // Testimonial data moved here to be passed to carousel
+  const testimonialsData = [
+    {
+      name: "Ibu Santi",
+      role: "Orang Tua Murid",
+      content:
+        "Pengalaman belajar gerabah di A Trip Edukasika benar-benar luar biasa! Anak-anak saya jadi lebih kreatif dan berani mencoba hal baru. Sangat direkomendasikan!",
+      rating: 5,
+    },
+    {
+      name: "Pak Budi",
+      role: "Guru SD Merdeka",
+      content:
+        "A Trip Edukasika berhasil menyajikan edukasi budaya yang menyenangkan. Murid-murid kami belajar banyak tentang gerabah sambil bersenang-senang. Guru-guru juga terinspirasi!",
+      rating: 5,
+    },
+    {
+      name: "Ibu Ida",
+      role: "Ketua Komunitas Seni Jogja",
+      content:
+        "Programnya sangat interaktif! Kami dari komunitas merasa lebih dekat dengan warisan budaya lokal dan terinspirasi untuk terus berkreasi.",
+      rating: 5,
+    },
+    {
+      name: "Bapak Agung",
+      role: "Pengunjung Umum",
+      content:
+        "Tempatnya nyaman, pengajarnya sabar, dan hasilnya memuaskan. Sangat cocok untuk mengisi waktu luang bersama keluarga atau teman.",
+      rating: 4,
+    },
+    {
+      name: "Nadia",
+      role: "Mahasiswa Seni",
+      content:
+        "Sebagai mahasiswa seni, saya sangat mengapresiasi workshop di sini. Teknik yang diajarkan sangat praktis dan inspiratif untuk pengembangan karya.",
+      rating: 5,
+    },
+  ]
 
   useEffect(() => {
     // Simulate data fetching
@@ -524,6 +563,52 @@ WhatsApp: ${formData.whatsapp}`
         </div>
       </section>
 
+      {/* Galeri Kegiatan Belajar Membuat Gerabah Section */}
+      <section id="galeri-kegiatan" className="py-20 bg-gray-50 dark:bg-gray-900">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <Badge className="bg-[#FEA62D]/10 text-[#FEA62D] border-[#FEA62D]/20 mb-4">Galeri Kegiatan</Badge>
+            <h2 className="text-4xl font-bold text-gray-800 dark:text-gray-50 mb-6">
+              Galeri Kegiatan Belajar Membuat Gerabah
+            </h2>
+            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+              Lihat keseruan dan kreativitas para peserta saat belajar membuat gerabah bersama A Trip Edukasika.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12 animate-fade-in-up">
+            {[
+              { src: "/images/pottery-class-1.jpg", alt: "Siswa belajar membuat gerabah dengan bimbingan" },
+              { src: "/images/pottery-class-3.jpg", alt: "Anak-anak fokus membuat gerabah di workshop" },
+              { src: "/images/pottery-class-4.jpg", alt: "Kelompok peserta berkreasi dengan tanah liat" },
+              { src: "/images/pottery-class-5.jpg", alt: "Pengrajin menunjukkan cara menggunakan roda putar" },
+              { src: "/images/pottery-class-6.jpg", alt: "Suasana ceria di kelas membuat gerabah" },
+              { src: "/images/pottery-class-7.jpg", alt: "Hasil karya gerabah yang dibuat peserta" },
+            ].map((image, index) => (
+              <div key={index} className="relative group overflow-hidden rounded-xl shadow-lg">
+                <Image
+                  src={image.src || "/placeholder.svg"}
+                  alt={image.alt}
+                  width={400}
+                  height={300}
+                  className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-300"
+                />
+                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                  <Play className="h-12 w-12 text-white" />
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="text-center">
+            <Button size="lg" className="bg-[#FEA62D] hover:bg-[#E8941A] text-white font-semibold px-8 py-4">
+              <Instagram className="mr-2 h-5 w-5" />
+              Lihat Lebih Banyak
+            </Button>
+          </div>
+        </div>
+      </section>
+
       {/* Testimonials Section */}
       <section className="py-20 bg-gray-50 dark:bg-gray-900">
         <div className="container mx-auto px-4">
@@ -536,53 +621,8 @@ WhatsApp: ${formData.whatsapp}`
             </p>
           </div>
 
-          <div className="grid lg:grid-cols-3 gap-8 animate-fade-in-up">
-            {" "}
-            {/* Applied fade-in-up animation */}
-            {[
-              {
-                name: "Ibu Santi",
-                role: "Orang Tua Murid",
-                content:
-                  "Pengalaman belajar gerabah di A Trip Edukasika benar-benar luar biasa! Anak-anak saya jadi lebih kreatif dan berani mencoba hal baru. Sangat direkomendasikan!",
-                rating: 5,
-              },
-              {
-                name: "Pak Budi",
-                role: "Guru SD Merdeka",
-                content:
-                  "A Trip Edukasika berhasil menyajikan edukasi budaya yang menyenangkan. Murid-murid kami belajar banyak tentang gerabah sambil bersenang-senang. Guru-guru juga terinspirasi!",
-                rating: 5,
-              },
-              {
-                name: "Ibu Ida",
-                role: "Ketua Komunitas Seni Jogja",
-                content:
-                  "Programnya sangat interaktif! Kami dari komunitas merasa lebih dekat dengan warisan budaya lokal dan terinspirasi untuk terus berkreasi.",
-                rating: 5,
-              },
-            ].map((testimonial, index) => (
-              <Card key={index} className="border-0 shadow-lg bg-white dark:bg-gray-800">
-                <CardContent className="p-6">
-                  <div className="flex mb-4">
-                    {[...Array(testimonial.rating)].map((_, i) => (
-                      <Star key={i} className="h-5 w-5 text-yellow-500 fill-current" />
-                    ))}
-                  </div>
-                  <p className="text-gray-700 dark:text-gray-300 mb-6 italic">"{testimonial.content}"</p>
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-[#FEA62D]/10 rounded-full flex items-center justify-center">
-                      <Users className="h-6 w-6 text-[#FEA62D]" />
-                    </div>
-                    <div>
-                      <div className="font-semibold text-gray-800 dark:text-gray-50">{testimonial.name}</div>
-                      <div className="text-sm text-gray-600 dark:text-gray-400">{testimonial.role}</div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+          {/* Testimonial Carousel */}
+          <TestimonialCarousel testimonials={testimonialsData} />
         </div>
       </section>
 
