@@ -235,10 +235,10 @@ WhatsApp: ${formData.whatsapp}`
               size="lg"
               variant="outline"
               className="border-white text-white hover:bg-white hover:text-[#FEA62D] font-semibold px-8 py-4 text-lg bg-transparent"
-              onClick={() => document.getElementById("about")?.scrollIntoView({ behavior: "smooth" })}
+              onClick={() => document.getElementById("galeri-kegiatan")?.scrollIntoView({ behavior: "smooth" })}
             >
               <Play className="mr-2 h-5 w-5" />
-              Lihat Video
+              Lihat Dokumentasi
             </Button>
           </div>
         </div>
