@@ -7,11 +7,44 @@ import { ThemeProvider } from "@/components/theme-provider"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "A Trip Edukasika – Wisata Edukasi Keluarga di Desa Wisata Gerabah Kasongan Jogja",
+  title: "Wisata Edukasi Gerabah Kasongan – A Trip Edukasika",
   description:
-    "A Trip Edukasika - Wisata Edukasi menyediakan pengalaman belajar sambil bermain di Yogyakarta. Cocok untuk anak, sekolah, dan keluarga.",
+    "Nikmati pengalaman membuat gerabah langsung di Kasongan, Bantul. Edukasi kreatif untuk anak, sekolah, dan keluarga bersama pengrajin lokal.",
+  keywords: [
+    "wisata edukasi",
+    "gerabah",
+    "kasongan",
+    "wisata anak",
+    "pelatihan gerabah",
+    "sekolah",
+    "outbound anak",
+    "wisata jogja",
+    "edukasi seni",
+    "keluarga",
+  ],
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      noimageindex: false, // Default, can be changed if needed
+      "max-video-preview": -1, // Default, can be changed if needed
+      "max-image-preview": "large", // Default, can be changed if needed
+      "max-snippet": -1, // Default, can be changed if needed
+    },
+  },
+  authors: [{ name: "A Trip Edukasika – Wisata Edukasi Gerabah Kasongan" }],
+  viewport: "width=device-width, initial-scale=1.0",
+  themeColor: "#f5a623",
+  appleWebApp: {
+    capable: true,
+  },
   icons: {
-    icon: "/favicon.png", // Path to your favicon
+    icon: "/favicon.png",
+  },
+  other: {
+    google: "nositelinkssearchbox, notranslate",
   },
     generator: 'v0.dev'
 }
