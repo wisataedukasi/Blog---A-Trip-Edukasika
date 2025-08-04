@@ -59,7 +59,7 @@ const staticBlogPosts: BlogPost[] = [
       publishDate: "2024-07-15T10:00:00Z",
       featuredImage: {
         fields: {
-          file: { url: "//images.ctfassets.net/your_space_id/your_asset_id/your_asset_hash/pottery-class-1.jpg" }, // Placeholder URL
+          file: { url: "/images/pottery-class-1.jpg" }, // Placeholder URL
           description: "Gerabah Kasongan",
         },
       },
@@ -75,7 +75,7 @@ const staticBlogPosts: BlogPost[] = [
       publishDate: "2024-07-10T10:00:00Z",
       featuredImage: {
         fields: {
-          file: { url: "//images.ctfassets.net/your_space_id/your_asset_id/your_asset_hash/pottery-class-3.jpg" }, // Placeholder URL
+          file: { url: "/images/pottery-class-3.jpg" }, // Placeholder URL
           description: "Membuat gerabah",
         },
       },
@@ -91,7 +91,7 @@ const staticBlogPosts: BlogPost[] = [
       publishDate: "2024-07-05T10:00:00Z",
       featuredImage: {
         fields: {
-          file: { url: "//images.ctfassets.net/your_space_id/your_asset_id/your_asset_hash/pottery-class-4.jpg" }, // Placeholder URL
+          file: { url: "/images/pottery-class-4.jpg" }, // Placeholder URL
           description: "Anak-anak dengan gerabah",
         },
       },
@@ -165,62 +165,42 @@ WhatsApp: ${formData.whatsapp}`
         </div>
       </header>
 
-      {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-[#FEA62D] to-[#FF8C00] min-h-screen flex items-center justify-center overflow-hidden pt-20">
-        <div className="absolute inset-0 bg-black/10"></div>
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="text-center lg:text-left">
-              <Badge className="bg-white/20 text-white border-white/30 mb-6 text-sm px-4 py-2">
-                🏺 Wisata Edukasi Terpercaya
-              </Badge>
-              <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
-                Dari Tangan Pengrajin,
-                <span className="block text-yellow-100">Menuju Hati Pecinta Seni</span>
-              </h1>
-              <p className="text-xl text-white/90 mb-8 leading-relaxed">
-                Wisata edukasi gerabah interaktif dan menyenangkan untuk TK–SMA & umum di jantung budaya Kasongan,
-                Yogyakarta!
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                <Button
-                  size="lg"
-                  className="bg-white text-[#FEA62D] hover:bg-gray-100 font-semibold px-8 py-4 text-lg animate-pulse-slow" // Added pulse animation
-                  onClick={() => document.getElementById("booking")?.scrollIntoView({ behavior: "smooth" })}
-                >
-                  <Phone className="mr-2 h-5 w-5" />
-                  Booking Petualanganmu Sekarang!
-                </Button>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="border-white text-white hover:bg-white hover:text-[#FEA62D] font-semibold px-8 py-4 text-lg bg-transparent"
-                  onClick={() => document.getElementById("about")?.scrollIntoView({ behavior: "smooth" })}
-                >
-                  <Play className="mr-2 h-5 w-5" />
-                  Lihat Video
-                </Button>
-              </div>
-            </div>
-            <div className="relative">
-              <div className="relative rounded-3xl overflow-hidden shadow-2xl">
-                <Image
-                  src="/images/pottery-class-2.jpg"
-                  alt="Anak-anak sedang belajar membuat gerabah"
-                  width={600}
-                  height={400}
-                  className="w-full h-auto object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
-              </div>
-              <div className="absolute -bottom-6 -right-6 bg-white rounded-2xl p-4 shadow-xl">
-                <div className="flex items-center gap-2">
-                  <Star className="h-5 w-5 text-yellow-500 fill-current" />
-                  <span className="font-semibold text-gray-800">4.9/5</span>
-                  <span className="text-gray-600 text-sm">(200+ review)</span>
-                </div>
-              </div>
-            </div>
+      {/* Hero Section with Parallax Background */}
+      <section
+        className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 bg-cover bg-center bg-scroll md:bg-fixed"
+        style={{ backgroundImage: 'url("/images/pottery-class-2.jpg")' }}
+      >
+        <div className="absolute inset-0 bg-black/40"></div> {/* Darker overlay for text readability */}
+        <div className="container mx-auto px-4 relative z-10 text-white text-center animate-fade-in-up">
+          <Badge className="bg-white/20 text-white border-white/30 mb-6 text-sm px-4 py-2">
+            🏺 Wisata Edukasi Terpercaya
+          </Badge>
+          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
+            Dari Tangan Pengrajin,
+            <span className="block text-yellow-100">Menuju Hati Pecinta Seni</span>
+          </h1>
+          <p className="text-xl text-white/90 mb-8 leading-relaxed max-w-3xl mx-auto">
+            Wisata edukasi gerabah interaktif dan menyenangkan untuk TK–SMA & umum di jantung budaya Kasongan,
+            Yogyakarta!
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button
+              size="lg"
+              className="bg-white text-[#FEA62D] hover:bg-gray-100 font-semibold px-8 py-4 text-lg animate-pulse-slow"
+              onClick={() => document.getElementById("booking")?.scrollIntoView({ behavior: "smooth" })}
+            >
+              <Phone className="mr-2 h-5 w-5" />
+              Booking Petualanganmu Sekarang!
+            </Button>
+            <Button
+              size="lg"
+              variant="outline"
+              className="border-white text-white hover:bg-white hover:text-[#FEA62D] font-semibold px-8 py-4 text-lg bg-transparent"
+              onClick={() => document.getElementById("about")?.scrollIntoView({ behavior: "smooth" })}
+            >
+              <Play className="mr-2 h-5 w-5" />
+              Lihat Video
+            </Button>
           </div>
         </div>
       </section>
@@ -691,7 +671,7 @@ WhatsApp: ${formData.whatsapp}`
                 <Image
                   src={
                     post.fields.featuredImage?.fields.file?.url
-                      ? `https:${post.fields.featuredImage.fields.file.url}`
+                      ? post.fields.featuredImage.fields.file.url
                       : "/placeholder.svg?height=200&width=300"
                   }
                   alt={post.fields.title}
