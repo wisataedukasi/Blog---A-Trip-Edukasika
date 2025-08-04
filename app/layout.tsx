@@ -10,6 +10,9 @@ export const metadata: Metadata = {
   title: "A Trip Edukasika – Wisata Edukasi Keluarga di Desa Wisata Gerabah Kasongan Jogja",
   description:
     "A Trip Edukasika - Wisata Edukasi menyediakan pengalaman belajar sambil bermain di Yogyakarta. Cocok untuk anak, sekolah, dan keluarga.",
+  icons: {
+    icon: "/favicon.png", // Path to your favicon
+  },
     generator: 'v0.dev'
 }
 
