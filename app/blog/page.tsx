@@ -37,7 +37,7 @@ const staticBlogPosts: BlogPost[] = [
       publishDate: "2024-07-15T10:00:00Z",
       featuredImage: {
         fields: {
-          file: { url: "//images.ctfassets.net/your_space_id/your_asset_id/your_asset_hash/pottery-class-1.jpg" }, // Placeholder URL
+          file: { url: "/images/pottery-class-1.jpg" },
           description: "Gerabah Kasongan",
         },
       },
@@ -53,7 +53,7 @@ const staticBlogPosts: BlogPost[] = [
       publishDate: "2024-07-10T10:00:00Z",
       featuredImage: {
         fields: {
-          file: { url: "//images.ctfassets.net/your_space_id/your_asset_id/your_asset_hash/pottery-class-3.jpg" }, // Placeholder URL
+          file: { url: "/images/pottery-class-3.jpg" },
           description: "Membuat gerabah",
         },
       },
@@ -69,7 +69,7 @@ const staticBlogPosts: BlogPost[] = [
       publishDate: "2024-07-05T10:00:00Z",
       featuredImage: {
         fields: {
-          file: { url: "//images.ctfassets.net/your_space_id/your_asset_id/your_asset_hash/pottery-class-4.jpg" }, // Placeholder URL
+          file: { url: "/images/pottery-class-4.jpg" },
           description: "Anak-anak dengan gerabah",
         },
       },
@@ -85,7 +85,7 @@ const staticBlogPosts: BlogPost[] = [
       publishDate: "2024-06-28T10:00:00Z",
       featuredImage: {
         fields: {
-          file: { url: "//images.ctfassets.net/your_space_id/your_asset_id/your_asset_hash/pottery-class-5.jpg" }, // Placeholder URL
+          file: { url: "/images/pottery-class-5.jpg" },
           description: "Desa Kasongan",
         },
       },
@@ -118,11 +118,7 @@ export default async function BlogPage() {
           {blogPosts.map((post) => (
             <Card key={post.sys.id} className="border-0 shadow-lg bg-white dark:bg-gray-800">
               <Image
-                src={
-                  post.fields.featuredImage?.fields.file?.url
-                    ? `https:${post.fields.featuredImage.fields.file.url}`
-                    : "/placeholder.svg?height=200&width=300"
-                }
+                src={post.fields.featuredImage?.fields.file?.url || "/placeholder.svg?height=200&width=300"}
                 alt={post.fields.title}
                 width={400}
                 height={200}
