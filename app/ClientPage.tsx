@@ -913,7 +913,13 @@ WhatsApp: ${formData.whatsapp}`
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             <div>
-              <h3 className="text-2xl font-bold text-[#FEA62D] mb-4">A Trip Edukasika</h3>
+              <Image
+                src="/images/LOGO-FIX-01-PNG.png"
+                alt="A Trip Edukasika Logo"
+                width={200} // Adjust width as needed
+                height={50} // Adjust height as needed
+                className="h-12 w-auto mb-4" // Tailwind classes for responsive height and auto width
+              />
               <p className="text-gray-300 mb-4">
                 Wisata edukasi gerabah terpercaya di Kasongan, Yogyakarta. Menghubungkan tradisi dengan edukasi modern.
               </p>
@@ -927,25 +933,53 @@ WhatsApp: ${formData.whatsapp}`
             <div>
               <h4 className="text-lg font-semibold mb-4">Navigasi Cepat</h4>
               <div className="space-y-2">
-                <Link href="#about" className="block text-gray-300 hover:text-[#FEA62D] transition-colors">
+                <Link
+                  href="#about"
+                  className="block text-gray-300 hover:text-[#FEA62D] transition-colors"
+                  aria-label="Tentang Kami"
+                >
                   Tentang Kami
                 </Link>
-                <Link href="#programs" className="block text-gray-300 hover:text-[#FEA62D] transition-colors">
+                <Link
+                  href="#programs"
+                  className="block text-gray-300 hover:text-[#FEA62D] transition-colors"
+                  aria-label="Program Kunjungan"
+                >
                   Program
                 </Link>
-                <Link href="#gallery" className="block text-gray-300 hover:text-[#FEA62D] transition-colors">
+                <Link
+                  href="#gallery"
+                  className="block text-gray-300 hover:text-[#FEA62D] transition-colors"
+                  aria-label="Galeri"
+                >
                   Galeri
                 </Link>
-                <Link href="#faq" className="block text-gray-300 hover:text-[#FEA62D] transition-colors">
+                <Link
+                  href="#faq"
+                  className="block text-gray-300 hover:text-[#FEA62D] transition-colors"
+                  aria-label="Pertanyaan Umum"
+                >
                   FAQ
                 </Link>
-                <Link href="#blog" className="block text-gray-300 hover:text-[#FEA62D] transition-colors">
+                <Link
+                  href="#blog"
+                  className="block text-gray-300 hover:text-[#FEA62D] transition-colors"
+                  aria-label="Blog Kami"
+                >
                   Blog
                 </Link>
-                <Link href="#booking" className="block text-gray-300 hover:text-[#FEA62D] transition-colors">
+                <Link
+                  href="#booking"
+                  className="block text-gray-300 hover:text-[#FEA62D] transition-colors"
+                  aria-label="Booking"
+                >
                   Booking
                 </Link>
-                <Link href="#lokasi" className="block text-gray-300 hover:text-[#FEA62D] transition-colors">
+                <Link
+                  href="#lokasi"
+                  className="block text-gray-300 hover:text-[#FEA62D] transition-colors"
+                  aria-label="Lokasi Kami"
+                >
                   Lokasi
                 </Link>
               </div>
