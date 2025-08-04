@@ -46,6 +46,9 @@ export const metadata: Metadata = {
   other: {
     google: "nositelinkssearchbox, notranslate",
   },
+  verification: {
+    google: "b00zn6M_w5XN4JRWV-DVIYfwm1cUKJ_8seN-Iy_XsSg", // Added Google Site Verification
+  },
     generator: 'v0.dev'
 }
 
