@@ -25,83 +25,16 @@ import Image from "next/image"
 import Link from "next/link"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { ModeToggle } from "@/components/mode-toggle"
-import { TestimonialCarousel } from "@/components/testimonial-carousel" // Import the new component
+import { TestimonialCarousel } from "@/components/testimonial-carousel"
+import { useLanguage } from "@/components/language-context"
+import { staticBlogPosts, testimonialsData } from "@/lib/blog-data"
+import { LanguageSwitcher } from "@/components/language-switcher"
 
-// Placeholder for blog post type and data
-interface BlogPost {
-  sys: {
-    id: string
-  }
-  fields: {
-    title: string
-    slug: string
-    publishDate: string
-    featuredImage?: {
-      fields: {
-        file: {
-          url: string
-        }
-        description?: string
-      }
-    }
-    description: string
-    content: string // Simplified for placeholder
-  }
-}
-
-// Static placeholder data for blog posts
-const staticBlogPosts: BlogPost[] = [
-  {
-    sys: { id: "1" },
-    fields: {
-      title: "Mengenal Lebih Dekat Gerabah Kasongan",
-      slug: "mengenal-gerabah-kasongan",
-      publishDate: "2024-07-15T10:00:00Z",
-      featuredImage: {
-        fields: {
-          file: { url: "/images/pottery-class-1.jpg" }, // Placeholder URL
-          description: "Gerabah Kasongan",
-        },
-      },
-      description: "Pelajari sejarah dan keunikan gerabah dari Desa Kasongan, Yogyakarta.",
-      content: "Ini adalah konten lengkap dari artikel blog pertama.",
-    },
-  },
-  {
-    sys: { id: "2" },
-    fields: {
-      title: "Tips Membuat Gerabah Sendiri di Rumah",
-      slug: "tips-membuat-gerabah",
-      publishDate: "2024-07-10T10:00:00Z",
-      featuredImage: {
-        fields: {
-          file: { url: "/images/pottery-class-3.jpg" }, // Placeholder URL
-          description: "Membuat gerabah",
-        },
-      },
-      description: "Panduan langkah demi langkah untuk memulai hobi membuat gerabah di rumah.",
-      content: "Ini adalah konten lengkap dari artikel blog kedua.",
-    },
-  },
-  {
-    sys: { id: "3" },
-    fields: {
-      title: "Manfaat Edukasi Gerabah untuk Anak",
-      slug: "manfaat-edukasi-gerabah",
-      publishDate: "2024-07-05T10:00:00Z",
-      featuredImage: {
-        fields: {
-          file: { url: "/images/pottery-class-4.jpg" }, // Placeholder URL
-          description: "Anak-anak dengan gerabah",
-        },
-      },
-      description: "Bagaimana kegiatan membuat gerabah dapat mengembangkan kreativitas dan motorik anak.",
-      content: "Ini adalah konten lengkap dari artikel blog ketiga.",
-    },
-  },
-]
+// Placeholder for blog post type (now imported from lib/blog-data)
+type BlogPost = (typeof staticBlogPosts)[0]
 
 export default function ATripEdukasikaClient() {
+  const { t, isLoading } = useLanguage() // Use the translation hook and isLoading
   const [formData, setFormData] = useState({
     nama: "",
     asal: "",
@@ -109,52 +42,11 @@ export default function ATripEdukasikaClient() {
     tanggal: "",
     whatsapp: "",
   })
-  const [loading, setLoading] = useState(true)
   const [latestBlogPosts, setLatestBlogPosts] = useState<BlogPost[]>([])
 
-  // Testimonial data moved here to be passed to carousel
-  const testimonialsData = [
-    {
-      name: "Ibu Santi",
-      role: "Orang Tua Murid",
-      content:
-        "Pengalaman belajar gerabah di A Trip Edukasika benar-benar luar biasa! Anak-anak saya jadi lebih kreatif dan berani mencoba hal baru. Sangat direkomendasikan!",
-      rating: 5,
-    },
-    {
-      name: "Pak Budi",
-      role: "Guru SD Merdeka",
-      content:
-        "A Trip Edukasika berhasil menyajikan edukasi budaya yang menyenangkan. Murid-murid kami belajar banyak tentang gerabah sambil bersenang-senang. Guru-guru juga terinspirasi!",
-      rating: 5,
-    },
-    {
-      name: "Ibu Ida",
-      role: "Ketua Komunitas Seni Jogja",
-      content:
-        "Programnya sangat interaktif! Kami dari komunitas merasa lebih dekat dengan warisan budaya lokal dan terinspirasi untuk terus berkreasi.",
-      rating: 5,
-    },
-    {
-      name: "Bapak Agung",
-      role: "Pengunjung Umum",
-      content:
-        "Tempatnya nyaman, pengajarnya sabar, dan hasilnya memuaskan. Sangat cocok untuk mengisi waktu luang bersama keluarga atau teman.",
-      rating: 4,
-    },
-    {
-      name: "Nadia",
-      role: "Mahasiswa Seni",
-      content:
-        "Sebagai mahasiswa seni, saya sangat mengapresiasi workshop di sini. Teknik yang diajarkan sangat praktis dan inspiratif untuk pengembangan karya.",
-      rating: 5,
-    },
-  ]
-
   useEffect(() => {
-    // Simulate data fetching
+    // Simulate data fetching for blog posts (if not already handled by translation loading)
     setLatestBlogPosts(staticBlogPosts.slice(0, 3)) // Get latest 3 posts
-    setLoading(false)
   }, [])
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -177,7 +69,8 @@ WhatsApp: ${formData.whatsapp}`
     })
   }
 
-  if (loading) {
+  if (isLoading) {
+    // Use isLoading from LanguageContext
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
         <Loader2 className="h-12 w-12 animate-spin text-[#FEA62D]" />
@@ -188,19 +81,22 @@ WhatsApp: ${formData.whatsapp}`
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-50">
-      {/* Header with Dark Mode Toggle */}
+      {/* Header with Dark Mode Toggle and Language Switcher */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-gray-950/80 backdrop-blur-sm py-4 shadow-sm">
         <div className="container mx-auto px-4 flex justify-between items-center">
           <Link href="/">
             <Image
               src="/images/logo-a-trip-edukasika.png"
               alt="A Trip Edukasika Logo"
-              width={180} // Adjust width as needed
-              height={40} // Adjust height as needed
-              className="h-10 w-auto" // Tailwind classes for responsive height and auto width
+              width={180}
+              height={40}
+              className="h-10 w-auto"
             />
           </Link>
-          <ModeToggle />
+          <div className="flex items-center gap-4">
+            <LanguageSwitcher />
+            <ModeToggle />
+          </div>
         </div>
       </header>
 
@@ -209,19 +105,14 @@ WhatsApp: ${formData.whatsapp}`
         className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 bg-cover bg-center bg-scroll md:bg-fixed"
         style={{ backgroundImage: 'url("/images/pottery-class-2.jpg")' }}
       >
-        <div className="absolute inset-0 bg-black/40"></div> {/* Darker overlay for text readability */}
+        <div className="absolute inset-0 bg-black/40"></div>
         <div className="container mx-auto px-4 relative z-10 text-white text-center animate-fade-in-up">
-          <Badge className="bg-white/20 text-white border-white/30 mb-6 text-sm px-4 py-2">
-            🏺 Wisata Edukasi Terpercaya
-          </Badge>
+          <Badge className="bg-white/20 text-white border-white/30 mb-6 text-sm px-4 py-2">{t("hero_badge")}</Badge>
           <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
-            Dari Tangan Pengrajin,
-            <span className="block text-yellow-100">Menuju Hati Pecinta Seni</span>
+            {t("hero_heading_part1")}
+            <span className="block text-yellow-100">{t("hero_heading_part2")}</span>
           </h1>
-          <p className="text-xl text-white/90 mb-8 leading-relaxed max-w-3xl mx-auto">
-            Wisata edukasi gerabah interaktif dan menyenangkan untuk TK–SMA & umum di jantung budaya Kasongan,
-            Yogyakarta!
-          </p>
+          <p className="text-xl text-white/90 mb-8 leading-relaxed max-w-3xl mx-auto">{t("hero_intro")}</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button
               size="lg"
@@ -229,7 +120,7 @@ WhatsApp: ${formData.whatsapp}`
               onClick={() => document.getElementById("booking")?.scrollIntoView({ behavior: "smooth" })}
             >
               <Phone className="mr-2 h-5 w-5" />
-              Booking Petualanganmu Sekarang!
+              {t("hero_cta_booking")}
             </Button>
             <Button
               size="lg"
@@ -238,7 +129,7 @@ WhatsApp: ${formData.whatsapp}`
               onClick={() => document.getElementById("galeri-kegiatan")?.scrollIntoView({ behavior: "smooth" })}
             >
               <Play className="mr-2 h-5 w-5" />
-              Lihat Dokumentasi
+              {t("hero_cta_documentation")}
             </Button>
           </div>
         </div>
@@ -248,51 +139,45 @@ WhatsApp: ${formData.whatsapp}`
       <section id="about" className="py-20 bg-gray-50 dark:bg-gray-900">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <Badge className="bg-[#FEA62D]/10 text-[#FEA62D] border-[#FEA62D]/20 mb-4">Tentang Kami</Badge>
-            <h2 className="text-4xl font-bold text-gray-800 dark:text-gray-50 mb-6">
-              Membentuk Inspirasi, Menjelajahi Tradisi
-            </h2>
+            <Badge className="bg-[#FEA62D]/10 text-[#FEA62D] border-[#FEA62D]/20 mb-4">{t("about_badge")}</Badge>
+            <h2 className="text-4xl font-bold text-gray-800 dark:text-gray-50 mb-6">{t("about_heading")}</h2>
             <p className="text-xl text-gray-600 dark:text-gray-300 max-w-4xl mx-auto leading-relaxed">
-              Di jantung budaya Kasongan, Yogyakarta, A Trip Edukasika hadir sebagai jembatan yang menghubungkan
-              tradisi, edukasi, dan kreasi dalam satu perjalanan tak terlupakan. Kami mengajak Anda untuk menyelami
-              dunia gerabah secara interaktif dan menyenangkan.
+              {t("about_intro")}
             </p>
           </div>
 
           <div className="animate-fade-in-up">
-            {" "}
-            {/* Applied fade-in-up animation */}
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
               {[
                 {
                   icon: BookOpen,
-                  title: "Mengenal Sejarah & Filosofi",
-                  description: "Pelajari sejarah dan filosofi gerabah khas Jogja dari ahlinya",
+                  titleKey: "feature_history_title",
+                  descriptionKey: "feature_history_description",
                 },
                 {
                   icon: Users,
-                  title: "Tur Eksklusif Workshop",
-                  description: "Kunjungi langsung workshop pengrajin lokal berpengalaman",
+                  titleKey: "feature_workshop_title",
+                  descriptionKey: "feature_workshop_description",
                 },
                 {
                   icon: Heart,
-                  title: "Praktik Langsung",
-                  description: "Rasakan sensasi membentuk gerabah dengan tangan sendiri",
+                  titleKey: "feature_practice_title",
+                  descriptionKey: "feature_practice_description",
                 },
                 {
                   icon: Palette,
-                  title: "Kreativitas Tanpa Batas",
-                  description: "Warnai dan hias gerabah sesuai dengan kreativitas Anda",
+                  titleKey: "feature_creativity_title",
+                  descriptionKey: "feature_creativity_description",
                 },
                 {
                   icon: Award,
-                  title: "Karya Bisa Dibawa Pulang",
-                  description: "Hasil karya Anda menjadi kenang-kenangan berharga",
+                  titleKey: "feature_souvenir_title",
+                  descriptionKey: "feature_souvenir_description",
                 },
                 {
                   icon: CheckCircle,
-                  title: "Bimbingan Ahli",
-                  description: "Dibimbing langsung oleh pengrajin gerabah berpengalaman",
+                  titleKey: "feature_guidance_title",
+                  descriptionKey: "feature_guidance_description",
                 },
               ].map((feature, index) => (
                 <Card
@@ -303,8 +188,10 @@ WhatsApp: ${formData.whatsapp}`
                     <div className="w-16 h-16 bg-[#FEA62D]/10 rounded-full flex items-center justify-center mx-auto mb-4">
                       <feature.icon className="h-8 w-8 text-[#FEA62D]" />
                     </div>
-                    <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-50 mb-3">{feature.title}</h3>
-                    <p className="text-gray-600 dark:text-gray-300">{feature.description}</p>
+                    <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-50 mb-3">
+                      {t(feature.titleKey)}
+                    </h3>
+                    <p className="text-gray-600 dark:text-gray-300">{t(feature.descriptionKey)}</p>
                   </CardContent>
                 </Card>
               ))}
@@ -317,17 +204,11 @@ WhatsApp: ${formData.whatsapp}`
       <section className="py-20 bg-white dark:bg-gray-950">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-800 dark:text-gray-50 mb-6">
-              Mengapa Petualangan Gerabah Terbaik Ada di Sini?
-            </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-              A Trip Edukasika bukan sekadar wisata, ini adalah pengalaman belajar yang utuh dan menyeluruh
-            </p>
+            <h2 className="text-4xl font-bold text-gray-800 dark:text-gray-50 mb-6">{t("why_choose_us_heading")}</h2>
+            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">{t("why_choose_us_intro")}</p>
           </div>
 
           <div className="grid lg:grid-cols-2 gap-12 items-center animate-fade-in-up">
-            {" "}
-            {/* Applied fade-in-up animation */}
             <div>
               <Image
                 src="/images/pottery-class-7.jpg"
@@ -340,28 +221,28 @@ WhatsApp: ${formData.whatsapp}`
             <div className="space-y-6">
               {[
                 {
-                  title: "Berpengalaman & Terpercaya",
-                  description: "Sudah dipercaya puluhan sekolah, lembaga, dan instansi",
+                  titleKey: "benefit_experienced_title",
+                  descriptionKey: "benefit_experienced_description",
                 },
                 {
-                  title: "Fasilitas Lengkap & Aman",
-                  description: "Lokasi pelatihan nyaman dan aman untuk segala usia",
+                  titleKey: "benefit_facilities_title",
+                  descriptionKey: "benefit_facilities_description",
                 },
                 {
-                  title: "Biaya Kompetitif, Paket Fleksibel",
-                  description: "Tersedia berbagai pilihan paket sesuai kebutuhan",
+                  titleKey: "benefit_cost_title",
+                  descriptionKey: "benefit_cost_description",
                 },
                 {
-                  title: "Belajar dari Pengrajin Lokal",
-                  description: "Dibimbing langsung oleh ahli gerabah berpengalaman",
+                  titleKey: "benefit_local_craftsmen_title",
+                  descriptionKey: "benefit_local_craftsmen_description",
                 },
                 {
-                  title: "Tumbuhkan Kreativitas",
-                  description: "Asah keterampilan motorik, seni, dan rasa cinta warisan budaya",
+                  titleKey: "benefit_creativity_title",
+                  descriptionKey: "benefit_creativity_description",
                 },
                 {
-                  title: "Interaktif dan Menyenangkan",
-                  description: "Praktik langsung dari membentuk hingga menghias",
+                  titleKey: "benefit_interactive_title",
+                  descriptionKey: "benefit_interactive_description",
                 },
               ].map((item, index) => (
                 <div key={index} className="flex items-start gap-4">
@@ -369,8 +250,8 @@ WhatsApp: ${formData.whatsapp}`
                     <CheckCircle className="h-4 w-4 text-white" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-50 mb-1">{item.title}</h3>
-                    <p className="text-gray-600 dark:text-gray-300">{item.description}</p>
+                    <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-50 mb-1">{t(item.titleKey)}</h3>
+                    <p className="text-gray-600 dark:text-gray-300">{t(item.descriptionKey)}</p>
                   </div>
                 </div>
               ))}
@@ -383,41 +264,37 @@ WhatsApp: ${formData.whatsapp}`
       <section className="py-20 bg-gray-50 dark:bg-gray-900">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <Badge className="bg-[#FEA62D]/10 text-[#FEA62D] border-[#FEA62D]/20 mb-4">Program Kunjungan</Badge>
-            <h2 className="text-4xl font-bold text-gray-800 dark:text-gray-50 mb-6">
-              Temukan Paket Edukasi Gerabah Pilihanmu!
-            </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-300">
-              Pengalaman Belajar Seru dan Edukatif untuk Semua Kalangan
-            </p>
+            <Badge className="bg-[#FEA62D]/10 text-[#FEA62D] border-[#FEA62D]/20 mb-4">{t("programs_badge")}</Badge>
+            <h2 className="text-4xl font-bold text-gray-800 dark:text-gray-50 mb-6">{t("programs_heading")}</h2>
+            <p className="text-xl text-gray-600 dark:text-gray-300">{t("programs_intro")}</p>
           </div>
 
           <div className="grid lg:grid-cols-3 gap-8 animate-fade-in-up">
-            {" "}
-            {/* Applied fade-in-up animation */}
             {/* Paket Keluarga */}
             <Card className="relative border-2 border-[#FEA62D] shadow-xl hover:shadow-2xl transition-shadow duration-300 bg-white dark:bg-gray-800">
               <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                <Badge className="bg-[#FEA62D] text-white px-4 py-2 text-sm font-semibold">Best Deal</Badge>
+                <Badge className="bg-[#FEA62D] text-white px-4 py-2 text-sm font-semibold">
+                  {t("package_family_badge")}
+                </Badge>
               </div>
               <CardContent className="p-8">
                 <div className="text-center mb-6">
-                  <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-50 mb-2">Paket Edukasi Keluarga</h3>
-                  <p className="text-gray-600 dark:text-gray-300 mb-4">
-                    Liburan Asik, Belajar Kreatif Bersama Keluarga!
-                  </p>
-                  <div className="text-4xl font-bold text-[#FEA62D] mb-2">Rp 150.000</div>
-                  <div className="text-gray-500 dark:text-gray-400">per orang</div>
+                  <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-50 mb-2">
+                    {t("package_family_title")}
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-300 mb-4">{t("package_family_description")}</p>
+                  <div className="text-4xl font-bold text-[#FEA62D] mb-2">{t("package_family_price")}</div>
+                  <div className="text-gray-500 dark:text-gray-400">{t("package_family_per_person")}</div>
                 </div>
 
                 <div className="space-y-3 mb-8">
                   {[
-                    "Tanah liat & alat lengkap",
-                    "Alat Putar & Cetak",
-                    "Cat dan kuas",
-                    "Pendamping edukator",
-                    "Pelatihan dasar gerabah mini",
-                    "Souvenir hasil karya",
+                    t("package_family_feature1"),
+                    t("package_family_feature2"),
+                    t("package_family_feature3"),
+                    t("package_family_feature4"),
+                    t("package_family_feature5"),
+                    t("package_family_feature6"),
                   ].map((feature, index) => (
                     <div key={index} className="flex items-center gap-3">
                       <CheckCircle className="h-5 w-5 text-[#FEA62D]" />
@@ -430,7 +307,7 @@ WhatsApp: ${formData.whatsapp}`
                   className="w-full bg-[#FEA62D] hover:bg-[#E8941A] text-white font-semibold py-3"
                   onClick={() => document.getElementById("booking")?.scrollIntoView({ behavior: "smooth" })}
                 >
-                  Pilih Paket Ini
+                  {t("choose_package_button")}
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </CardContent>
@@ -438,24 +315,28 @@ WhatsApp: ${formData.whatsapp}`
             {/* Paket Pelajar */}
             <Card className="relative border-2 border-green-500 shadow-xl hover:shadow-2xl transition-shadow duration-300 bg-white dark:bg-gray-800">
               <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                <Badge className="bg-green-500 text-white px-4 py-2 text-sm font-semibold">Terpopuler</Badge>
+                <Badge className="bg-green-500 text-white px-4 py-2 text-sm font-semibold">
+                  {t("package_student_badge")}
+                </Badge>
               </div>
               <CardContent className="p-8">
                 <div className="text-center mb-6">
-                  <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-50 mb-2">Paket Pelajar / Rombongan</h3>
-                  <p className="text-gray-600 dark:text-gray-300 mb-4">Petualangan Edukasi Sekolah Paling Seru!</p>
-                  <div className="text-4xl font-bold text-green-500 mb-2">Rp 45.000</div>
-                  <div className="text-gray-500 dark:text-gray-400">per orang</div>
+                  <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-50 mb-2">
+                    {t("package_student_title")}
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-300 mb-4">{t("package_student_description")}</p>
+                  <div className="text-4xl font-bold text-green-500 mb-2">{t("package_student_price")}</div>
+                  <div className="text-gray-500 dark:text-gray-400">{t("package_student_per_person")}</div>
                 </div>
 
                 <div className="space-y-3 mb-8">
                   {[
-                    "Tanah liat & alat putar",
-                    "Pendamping edukator",
-                    "Workshop interaktif",
-                    "Tur ke workshop pengrajin",
-                    "Pemandu kegiatan",
-                    "Hasil karya bisa dibawa pulang",
+                    t("package_student_feature1"),
+                    t("package_student_feature2"),
+                    t("package_student_feature3"),
+                    t("package_student_feature4"),
+                    t("package_student_feature5"),
+                    t("package_student_feature6"),
                   ].map((feature, index) => (
                     <div key={index} className="flex items-center gap-3">
                       <CheckCircle className="h-5 w-5 text-green-500" />
@@ -468,7 +349,7 @@ WhatsApp: ${formData.whatsapp}`
                   className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-3"
                   onClick={() => document.getElementById("booking")?.scrollIntoView({ behavior: "smooth" })}
                 >
-                  Pilih Paket Ini
+                  {t("choose_package_button")}
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </CardContent>
@@ -478,23 +359,21 @@ WhatsApp: ${formData.whatsapp}`
               <CardContent className="p-8">
                 <div className="text-center mb-6">
                   <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-50 mb-2">
-                    Paket Interaktif / Wawancara
+                    {t("package_interactive_title")}
                   </h3>
-                  <p className="text-gray-600 dark:text-gray-300 mb-4">
-                    Gali Ilmu, Asah Karya: Khusus Komunitas & Team Building!
-                  </p>
-                  <div className="text-4xl font-bold text-blue-500 mb-2">Rp 75.000</div>
-                  <div className="text-gray-500 dark:text-gray-400">per orang</div>
+                  <p className="text-gray-600 dark:text-gray-300 mb-4">{t("package_interactive_description")}</p>
+                  <div className="text-4xl font-bold text-blue-500 mb-2">{t("package_interactive_price")}</div>
+                  <div className="text-gray-500 dark:text-gray-400">{t("package_interactive_per_person")}</div>
                 </div>
 
                 <div className="space-y-3 mb-8">
                   {[
-                    "Tanah liat & alat lengkap",
-                    "Alat Putar & Cetak",
-                    "Pendamping edukator",
-                    "Workshop tingkat lanjut",
-                    "Diskusi budaya & ekonomi kreatif",
-                    "Hasil karya bisa dibawa pulang",
+                    t("package_interactive_feature1"),
+                    t("package_interactive_feature2"),
+                    t("package_interactive_feature3"),
+                    t("package_interactive_feature4"),
+                    t("package_interactive_feature5"),
+                    t("package_interactive_feature6"),
                   ].map((feature, index) => (
                     <div key={index} className="flex items-center gap-3">
                       <CheckCircle className="h-5 w-5 text-blue-500" />
@@ -507,7 +386,7 @@ WhatsApp: ${formData.whatsapp}`
                   className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3"
                   onClick={() => document.getElementById("booking")?.scrollIntoView({ behavior: "smooth" })}
                 >
-                  Pilih Paket Ini
+                  {t("choose_package_button")}
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </CardContent>
@@ -520,17 +399,11 @@ WhatsApp: ${formData.whatsapp}`
       <section className="py-20 bg-white dark:bg-gray-950">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-800 dark:text-gray-50 mb-6">
-              Momen-momen Seru di A Trip Edukasika
-            </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-300">
-              Intip keseruan teman-teman kami saat berkreasi dan belajar!
-            </p>
+            <h2 className="text-4xl font-bold text-gray-800 dark:text-gray-50 mb-6">{t("gallery_heading")}</h2>
+            <p className="text-xl text-gray-600 dark:text-gray-300">{t("gallery_intro")}</p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12 animate-fade-in-up">
-            {" "}
-            {/* Applied fade-in-up animation */}
             {[
               { src: "/images/pottery-class-1.jpg", alt: "Siswa belajar membuat gerabah" },
               { src: "/images/pottery-class-3.jpg", alt: "Workshop gerabah interaktif" },
@@ -557,7 +430,7 @@ WhatsApp: ${formData.whatsapp}`
           <div className="text-center">
             <Button size="lg" className="bg-[#FEA62D] hover:bg-[#E8941A] text-white font-semibold px-8 py-4">
               <Instagram className="mr-2 h-5 w-5" />
-              Lihat Lebih Banyak di Instagram
+              {t("gallery_instagram_button")}
             </Button>
           </div>
         </div>
@@ -567,13 +440,11 @@ WhatsApp: ${formData.whatsapp}`
       <section id="galeri-kegiatan" className="py-20 bg-gray-50 dark:bg-gray-900">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <Badge className="bg-[#FEA62D]/10 text-[#FEA62D] border-[#FEA62D]/20 mb-4">Galeri Kegiatan</Badge>
-            <h2 className="text-4xl font-bold text-gray-800 dark:text-gray-50 mb-6">
-              Galeri Kegiatan Belajar Membuat Gerabah
-            </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-              Lihat keseruan dan kreativitas para peserta saat belajar membuat gerabah bersama A Trip Edukasika.
-            </p>
+            <Badge className="bg-[#FEA62D]/10 text-[#FEA62D] border-[#FEA62D]/20 mb-4">
+              {t("activity_gallery_badge")}
+            </Badge>
+            <h2 className="text-4xl font-bold text-gray-800 dark:text-gray-50 mb-6">{t("activity_gallery_heading")}</h2>
+            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">{t("activity_gallery_intro")}</p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12 animate-fade-in-up">
@@ -603,7 +474,7 @@ WhatsApp: ${formData.whatsapp}`
           <div className="text-center">
             <Button size="lg" className="bg-[#FEA62D] hover:bg-[#E8941A] text-white font-semibold px-8 py-4">
               <Instagram className="mr-2 h-5 w-5" />
-              Lihat Lebih Banyak
+              {t("activity_gallery_more_button")}
             </Button>
           </div>
         </div>
@@ -613,12 +484,8 @@ WhatsApp: ${formData.whatsapp}`
       <section className="py-20 bg-gray-50 dark:bg-gray-900">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-800 dark:text-gray-50 mb-6">
-              Apa Kata Mereka yang Sudah Berpetualangan Bersama Kami?
-            </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-300">
-              Kisah inspiratif dari guru, orang tua, dan komunitas
-            </p>
+            <h2 className="text-4xl font-bold text-gray-800 dark:text-gray-50 mb-6">{t("testimonials_heading")}</h2>
+            <p className="text-xl text-gray-600 dark:text-gray-300">{t("testimonials_intro")}</p>
           </div>
 
           {/* Testimonial Carousel */}
@@ -630,61 +497,51 @@ WhatsApp: ${formData.whatsapp}`
       <section id="faq" className="py-20 bg-white dark:bg-gray-950">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <Badge className="bg-[#FEA62D]/10 text-[#FEA62D] border-[#FEA62D]/20 mb-4">Pertanyaan Umum</Badge>
-            <h2 className="text-4xl font-bold text-gray-800 dark:text-gray-50 mb-6">Sering Ditanyakan</h2>
-            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-              Temukan jawaban atas pertanyaan yang sering diajukan tentang A Trip Edukasika.
-            </p>
+            <Badge className="bg-[#FEA62D]/10 text-[#FEA62D] border-[#FEA62D]/20 mb-4">{t("faq_badge")}</Badge>
+            <h2 className="text-4xl font-bold text-gray-800 dark:text-gray-50 mb-6">{t("faq_heading")}</h2>
+            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">{t("faq_intro")}</p>
           </div>
 
           <div className="max-w-3xl mx-auto animate-fade-in-up">
-            {" "}
-            {/* Applied fade-in-up animation */}
             <Accordion type="single" collapsible className="w-full">
               <AccordionItem value="item-1">
                 <AccordionTrigger className="text-lg font-semibold text-gray-800 dark:text-gray-50 hover:no-underline">
-                  Apa itu A Trip Edukasika?
+                  {t("faq_q1")}
                 </AccordionTrigger>
                 <AccordionContent className="text-gray-700 dark:text-gray-300 text-base">
-                  A Trip Edukasika adalah program wisata edukasi interaktif yang mengajak peserta untuk belajar dan
-                  berkreasi dengan gerabah di Kasongan, Yogyakarta. Kami menawarkan pengalaman langsung dalam membuat
-                  karya seni dari tanah liat.
+                  {t("faq_a1")}
                 </AccordionContent>
               </AccordionItem>
               <AccordionItem value="item-2">
                 <AccordionTrigger className="text-lg font-semibold text-gray-800 dark:text-gray-50 hover:no-underline">
-                  Siapa saja yang bisa bergabung?
+                  {t("faq_q2")}
                 </AccordionTrigger>
                 <AccordionContent className="text-gray-700 dark:text-gray-300 text-base">
-                  Program kami cocok untuk berbagai kalangan, mulai dari anak-anak TK, SD, SMP, SMA, mahasiswa,
-                  keluarga, komunitas, hingga instansi yang ingin merasakan pengalaman edukasi budaya yang unik.
+                  {t("faq_a2")}
                 </AccordionContent>
               </AccordionItem>
               <AccordionItem value="item-3">
                 <AccordionTrigger className="text-lg font-semibold text-gray-800 dark:text-gray-50 hover:no-underline">
-                  Apakah hasil karya bisa dibawa pulang?
+                  {t("faq_q3")}
                 </AccordionTrigger>
                 <AccordionContent className="text-gray-700 dark:text-gray-300 text-base">
-                  Ya, semua hasil karya gerabah yang Anda buat selama workshop bisa dibawa pulang sebagai
-                  kenang-kenangan. Untuk beberapa paket, hasil karya mungkin belum dibakar.
+                  {t("faq_a3")}
                 </AccordionContent>
               </AccordionItem>
               <AccordionItem value="item-4">
                 <AccordionTrigger className="text-lg font-semibold text-gray-800 dark:text-gray-50 hover:no-underline">
-                  Bagaimana cara booking?
+                  {t("faq_q4")}
                 </AccordionTrigger>
                 <AccordionContent className="text-gray-700 dark:text-gray-300 text-base">
-                  Anda bisa mengisi formulir booking di bagian bawah halaman ini, atau langsung menghubungi kami via
-                  WhatsApp di nomor yang tertera. Tim kami akan segera membantu Anda.
+                  {t("faq_a4")}
                 </AccordionContent>
               </AccordionItem>
               <AccordionItem value="item-5">
                 <AccordionTrigger className="text-lg font-semibold text-gray-800 dark:text-gray-50 hover:no-underline">
-                  Apakah ada diskon untuk rombongan besar?
+                  {t("faq_q5")}
                 </AccordionTrigger>
                 <AccordionContent className="text-gray-700 dark:text-gray-300 text-base">
-                  Tentu! Kami memiliki paket khusus dengan harga kompetitif untuk rombongan besar (sekolah, komunitas,
-                  instansi). Silakan hubungi kami untuk informasi lebih lanjut dan penawaran terbaik.
+                  {t("faq_a5")}
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
@@ -696,16 +553,12 @@ WhatsApp: ${formData.whatsapp}`
       <section id="blog" className="py-20 bg-gray-50 dark:bg-gray-900">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <Badge className="bg-[#FEA62D]/10 text-[#FEA62D] border-[#FEA62D]/20 mb-4">Blog Kami</Badge>
-            <h2 className="text-4xl font-bold text-gray-800 dark:text-gray-50 mb-6">Artikel Terbaru</h2>
-            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-              Baca kisah inspiratif, tips, dan berita terbaru seputar dunia gerabah dan edukasi.
-            </p>
+            <Badge className="bg-[#FEA62D]/10 text-[#FEA62D] border-[#FEA62D]/20 mb-4">{t("blog_badge")}</Badge>
+            <h2 className="text-4xl font-bold text-gray-800 dark:text-gray-50 mb-6">{t("blog_heading")}</h2>
+            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">{t("blog_intro")}</p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 animate-fade-in-up">
-            {" "}
-            {/* Applied fade-in-up animation */}
             {latestBlogPosts.map((post) => (
               <Card key={post.sys.id} className="border-0 shadow-lg bg-white dark:bg-gray-800">
                 <Image
@@ -714,13 +567,15 @@ WhatsApp: ${formData.whatsapp}`
                       ? post.fields.featuredImage.fields.file.url
                       : "/placeholder.svg?height=200&width=300"
                   }
-                  alt={post.fields.title}
+                  alt={t(post.fields.titleKey)}
                   width={400}
                   height={200}
                   className="w-full h-48 object-cover rounded-t-lg"
                 />
                 <CardContent className="p-6">
-                  <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-50 mb-2">{post.fields.title}</h3>
+                  <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-50 mb-2">
+                    {t(post.fields.titleKey)}
+                  </h3>
                   <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
                     {new Date(post.fields.publishDate).toLocaleDateString("id-ID", {
                       year: "numeric",
@@ -728,9 +583,9 @@ WhatsApp: ${formData.whatsapp}`
                       day: "numeric",
                     })}
                   </p>
-                  <p className="text-gray-700 dark:text-gray-300 mb-4">{post.fields.description}</p>
+                  <p className="text-gray-700 dark:text-gray-300 mb-4">{t(post.fields.descriptionKey)}</p>
                   <Link href={`/blog/${post.fields.slug}`} className="text-[#FEA62D] hover:underline flex items-center">
-                    Baca Selengkapnya <ArrowRight className="ml-1 h-4 w-4" />
+                    {t("blog_read_more")} <ArrowRight className="ml-1 h-4 w-4" />
                   </Link>
                 </CardContent>
               </Card>
@@ -739,7 +594,7 @@ WhatsApp: ${formData.whatsapp}`
           <div className="text-center mt-12">
             <Link href="/blog" passHref>
               <Button size="lg" className="bg-[#FEA62D] hover:bg-[#E8941A] text-white font-semibold px-8 py-4">
-                Lihat Semua Blog
+                {t("blog_view_all")}
               </Button>
             </Link>
           </div>
@@ -751,29 +606,23 @@ WhatsApp: ${formData.whatsapp}`
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-12">
-              <h2 className="text-4xl font-bold text-gray-800 dark:text-gray-50 mb-6">
-                Wujudkan Petualangan Edukasimu Sekarang!
-              </h2>
-              <p className="text-xl text-gray-600 dark:text-gray-300">
-                Isi formulir di bawah ini untuk booking jadwal kunjungan Anda. Tim kami akan segera menghubungi.
-              </p>
+              <h2 className="text-4xl font-bold text-gray-800 dark:text-gray-50 mb-6">{t("booking_heading")}</h2>
+              <p className="text-xl text-gray-600 dark:text-gray-300">{t("booking_intro")}</p>
             </div>
 
             <div className="grid lg:grid-cols-2 gap-12 items-start animate-fade-in-up">
-              {" "}
-              {/* Applied fade-in-up animation */}
               <Card className="border-0 shadow-xl bg-white dark:bg-gray-800">
                 <CardContent className="p-8">
                   <form onSubmit={handleSubmit} className="space-y-6">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        Nama Lengkap
+                        {t("form_name_label")}
                       </label>
                       <Input
                         name="nama"
                         value={formData.nama}
                         onChange={handleInputChange}
-                        placeholder="Siapa nama Anda?"
+                        placeholder={t("form_name_placeholder")}
                         required
                         className="w-full bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-50"
                       />
@@ -781,13 +630,13 @@ WhatsApp: ${formData.whatsapp}`
 
                     <div>
                       <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        Asal Sekolah/Komunitas/Individu
+                        {t("form_origin_label")}
                       </label>
                       <Input
                         name="asal"
                         value={formData.asal}
                         onChange={handleInputChange}
-                        placeholder="Dari mana Anda berasal?"
+                        placeholder={t("form_origin_placeholder")}
                         required
                         className="w-full bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-50"
                       />
@@ -795,13 +644,13 @@ WhatsApp: ${formData.whatsapp}`
 
                     <div>
                       <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        Jumlah Peserta
+                        {t("form_participants_label")}
                       </label>
                       <Input
                         name="jumlah"
                         value={formData.jumlah}
                         onChange={handleInputChange}
-                        placeholder="Contoh: 30 orang"
+                        placeholder={t("form_participants_placeholder")}
                         required
                         className="w-full bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-50"
                       />
@@ -809,7 +658,7 @@ WhatsApp: ${formData.whatsapp}`
 
                     <div>
                       <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        Tanggal Kunjungan Pilihan
+                        {t("form_date_label")}
                       </label>
                       <Input
                         name="tanggal"
@@ -823,13 +672,13 @@ WhatsApp: ${formData.whatsapp}`
 
                     <div>
                       <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        Nomor WhatsApp Aktif
+                        {t("form_whatsapp_label")}
                       </label>
                       <Input
                         name="whatsapp"
                         value={formData.whatsapp}
                         onChange={handleInputChange}
-                        placeholder="Contoh: 081234567890"
+                        placeholder={t("form_whatsapp_placeholder")}
                         required
                         className="w-full bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-50"
                       />
@@ -841,7 +690,7 @@ WhatsApp: ${formData.whatsapp}`
                       className="w-full bg-[#FEA62D] hover:bg-[#E8941A] text-white font-semibold py-4"
                     >
                       <Phone className="mr-2 h-5 w-5" />
-                      Kirim Permintaan Booking
+                      {t("form_submit_button")}
                     </Button>
                   </form>
                 </CardContent>
@@ -849,25 +698,25 @@ WhatsApp: ${formData.whatsapp}`
               <div className="space-y-6">
                 <Card className="border-0 shadow-lg bg-white dark:bg-gray-800">
                   <CardContent className="p-6">
-                    <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-50 mb-4">Kontak Langsung</h3>
+                    <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-50 mb-4">
+                      {t("contact_heading")}
+                    </h3>
                     <div className="space-y-3">
                       <div className="flex items-center gap-3">
                         <Phone className="h-5 w-5 text-[#FEA62D]" />
                         <div>
-                          <div className="font-medium text-gray-800 dark:text-gray-50">WhatsApp CS Lidya</div>
+                          <div className="font-medium text-gray-800 dark:text-gray-50">{t("contact_whatsapp_cs")}</div>
                           <div className="text-gray-600 dark:text-gray-300">088980674734</div>
                         </div>
                       </div>
                       <div className="flex items-start gap-3">
                         <MapPin className="h-5 w-5 text-[#FEA62D] mt-1" />
                         <div>
-                          <div className="font-medium text-gray-800 dark:text-gray-50">Lokasi</div>
-                          <div className="text-gray-600 dark:text-gray-300">
-                            Kawasan Wisata Seni Gerabah Kasongan
-                            <br />
-                            Jl. Raya Kasongan Sentanan RT.06, Kajen, Bangunjiwo,
-                            <br />
-                            Kec. Kasihan, Kabupaten Bantul, DIY 55184
+                          <div className="font-medium text-gray-800 dark:text-gray-50">
+                            {t("contact_location_title")}
+                          </div>
+                          <div className="text-gray-600 dark:text-gray-300 whitespace-pre-line">
+                            {t("contact_location_address")}
                           </div>
                         </div>
                       </div>
@@ -878,14 +727,14 @@ WhatsApp: ${formData.whatsapp}`
                 <Card className="border-0 shadow-lg bg-[#FEA62D]/5 dark:bg-[#FEA62D]/10">
                   <CardContent className="p-6">
                     <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-50 mb-4">
-                      Mengapa Booking Sekarang?
+                      {t("why_book_now_heading")}
                     </h3>
                     <div className="space-y-3">
                       {[
-                        "Jadwal terbatas, booking lebih awal lebih baik",
-                        "Konsultasi gratis untuk menentukan paket terbaik",
-                        "Fleksibilitas reschedule jika ada perubahan",
-                        "Garansi kepuasan 100%",
+                        t("benefit_limited_slots"),
+                        t("benefit_free_consultation"),
+                        t("benefit_reschedule_flexibility"),
+                        t("benefit_satisfaction_guarantee"),
                       ].map((benefit, index) => (
                         <div key={index} className="flex items-center gap-3">
                           <CheckCircle className="h-5 w-5 text-[#FEA62D]" />
@@ -905,24 +754,20 @@ WhatsApp: ${formData.whatsapp}`
       <section id="lokasi" className="py-20 bg-white dark:bg-gray-950">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <Badge className="bg-[#FEA62D]/10 text-[#FEA62D] border-[#FEA62D]/20 mb-4">Lokasi Kami</Badge>
-            <h2 className="text-4xl font-bold text-gray-800 dark:text-gray-50 mb-6">Temukan Kami di Peta</h2>
-            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-              Kunjungi workshop kami di jantung Desa Wisata Gerabah Kasongan, Yogyakarta.
-            </p>
+            <Badge className="bg-[#FEA62D]/10 text-[#FEA62D] border-[#FEA62D]/20 mb-4">{t("location_badge")}</Badge>
+            <h2 className="text-4xl font-bold text-gray-800 dark:text-gray-50 mb-6">{t("location_heading")}</h2>
+            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">{t("location_intro")}</p>
           </div>
           <div className="relative w-full h-[400px] rounded-xl overflow-hidden shadow-xl animate-fade-in-up">
-            {" "}
-            {/* Applied fade-in-up animation */}
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3952.0000000000005!2d110.3456789!3d-7.854321!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7a5791a0a0a0a0%3A0x0!2sA%20Trip%20Edukasika%20-%20Wisata%20Edukasi%20Gerabah%20Kasongan!5e0!3m2!1sen!2sid!4v1678901234567!5m2!1sen!2sid"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3952.0000000000005!2d110.3456789!3d-7.854321!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7a5791a0a0a0a0%3A0x0!2sA%20Trip%20Edukasi%20-%20Wisata%20Edukasi%20Gerabah%20Kasongan!5e0!3m2!1sen!2sid!4v1678901234567!5m2!1sen!2sid"
               width="100%"
               height="100%"
               style={{ border: 0 }}
               allowFullScreen={true}
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
-              title="Lokasi A Trip Edukasika"
+              title={t("location_heading")}
             ></iframe>
           </div>
         </div>
@@ -936,13 +781,11 @@ WhatsApp: ${formData.whatsapp}`
               <Image
                 src="/images/LOGO-FIX-01-PNG.png"
                 alt="A Trip Edukasika Logo"
-                width={200} // Adjust width as needed
-                height={50} // Adjust height as needed
-                className="h-12 w-auto mb-4" // Tailwind classes for responsive height and auto width
+                width={200}
+                height={50}
+                className="h-12 w-auto mb-4"
               />
-              <p className="text-gray-300 mb-4">
-                Wisata edukasi gerabah terpercaya di Kasongan, Yogyakarta. Menghubungkan tradisi dengan edukasi modern.
-              </p>
+              <p className="text-gray-300 mb-4">{t("footer_description")}</p>
               <div className="flex gap-4">
                 <Link href="#" className="text-gray-300 hover:text-[#FEA62D] transition-colors">
                   <Instagram className="h-6 w-6" />
@@ -951,62 +794,62 @@ WhatsApp: ${formData.whatsapp}`
             </div>
 
             <div>
-              <h4 className="text-lg font-semibold mb-4">Navigasi Cepat</h4>
+              <h4 className="text-lg font-semibold mb-4">{t("footer_quick_nav")}</h4>
               <div className="space-y-2">
                 <Link
                   href="#about"
                   className="block text-gray-300 hover:text-[#FEA62D] transition-colors"
-                  aria-label="Tentang Kami"
+                  aria-label={t("footer_about_us")}
                 >
-                  Tentang Kami
+                  {t("footer_about_us")}
                 </Link>
                 <Link
                   href="#programs"
                   className="block text-gray-300 hover:text-[#FEA62D] transition-colors"
-                  aria-label="Program Kunjungan"
+                  aria-label={t("footer_programs")}
                 >
-                  Program
+                  {t("footer_programs")}
                 </Link>
                 <Link
                   href="#gallery"
                   className="block text-gray-300 hover:text-[#FEA62D] transition-colors"
-                  aria-label="Galeri"
+                  aria-label={t("footer_gallery")}
                 >
-                  Galeri
+                  {t("footer_gallery")}
                 </Link>
                 <Link
                   href="#faq"
                   className="block text-gray-300 hover:text-[#FEA62D] transition-colors"
-                  aria-label="Pertanyaan Umum"
+                  aria-label={t("footer_faq")}
                 >
-                  FAQ
+                  {t("footer_faq")}
                 </Link>
                 <Link
                   href="#blog"
                   className="block text-gray-300 hover:text-[#FEA62D] transition-colors"
-                  aria-label="Blog Kami"
+                  aria-label={t("footer_blog")}
                 >
-                  Blog
+                  {t("footer_blog")}
                 </Link>
                 <Link
                   href="#booking"
                   className="block text-gray-300 hover:text-[#FEA62D] transition-colors"
-                  aria-label="Booking"
+                  aria-label={t("footer_booking")}
                 >
-                  Booking
+                  {t("footer_booking")}
                 </Link>
                 <Link
                   href="#lokasi"
                   className="block text-gray-300 hover:text-[#FEA62D] transition-colors"
-                  aria-label="Lokasi Kami"
+                  aria-label={t("footer_location")}
                 >
-                  Lokasi
+                  {t("footer_location")}
                 </Link>
               </div>
             </div>
 
             <div>
-              <h4 className="text-lg font-semibold mb-4">Kontak</h4>
+              <h4 className="text-lg font-semibold mb-4">{t("footer_contact")}</h4>
               <div className="space-y-3">
                 <div className="flex items-center gap-2">
                   <Phone className="h-4 w-4 text-[#FEA62D]" />
@@ -1014,29 +857,29 @@ WhatsApp: ${formData.whatsapp}`
                 </div>
                 <div className="flex items-start gap-2">
                   <MapPin className="h-4 w-4 text-[#FEA62D] mt-1" />
-                  <span className="text-gray-300 text-sm">Kawasan Wisata Seni Gerabah Kasongan, Bantul, DIY</span>
+                  <span className="text-gray-300 text-sm">{t("contact_location_address")}</span>
                 </div>
               </div>
             </div>
 
             <div>
-              <h4 className="text-lg font-semibold mb-4">Lainnya</h4>
+              <h4 className="text-lg font-semibold mb-4">{t("footer_other")}</h4>
               <div className="space-y-2">
                 <Link href="/blog" className="block text-gray-300 hover:text-[#FEA62D] transition-colors">
-                  Blog Kami
+                  {t("footer_blog")}
                 </Link>
                 <Link href="#" className="block text-gray-300 hover:text-[#FEA62D] transition-colors">
-                  Katalog Produk Gerabah
+                  {t("footer_product_catalog")}
                 </Link>
                 <Link href="/kebijakan-privasi" className="block text-gray-300 hover:text-[#FEA62D] transition-colors">
-                  Kebijakan Privasi
+                  {t("footer_privacy_policy")}
                 </Link>
               </div>
             </div>
           </div>
 
           <div className="border-t border-gray-700 mt-8 pt-8 text-center">
-            <p className="text-gray-400">© 2024 A Trip Edukasika. Hak Cipta Dilindungi Undang-Undang.</p>
+            <p className="text-gray-400">{t("footer_copyright")}</p>
           </div>
         </div>
       </footer>

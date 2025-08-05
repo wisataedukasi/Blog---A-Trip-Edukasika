@@ -4,9 +4,8 @@
     <loc>https://wisataedukasika.space/sitemap.xml</loc>
     <lastmod>2025-08-05T12:31:51+00:00</lastmod>
   </sitemap>
-  <!-- Tambahkan sitemap lain di sini, contoh untuk blog -->
-  <!-- <sitemap>
+  <sitemap>
     <loc>https://wisataedukasika.space/blog-sitemap.xml</loc>
     <lastmod>2025-08-05T12:31:51+00:00</lastmod>
-  </sitemap> -->
+  </sitemap>
 </sitemapindex>

@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://wisataedukasika.space/sitemap_index.xml
