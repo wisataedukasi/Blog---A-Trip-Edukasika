@@ -3,10 +3,9 @@ import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
-import { LanguageProvider } from "@/components/language-context"
-import { cn } from "@/lib/utils" // Import cn utility
+import { LanguageProvider } from "@/components/language-context" // Added import
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" }) // Define Inter as a CSS variable
+const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
   title: "Wisata Edukasi Gerabah Kasongan – A Trip Edukasika",
@@ -30,10 +29,10 @@ export const metadata: Metadata = {
     googleBot: {
       index: true,
       follow: true,
-      noimageindex: false,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
+      noimageindex: false, // Default, can be changed if needed
+      "max-video-preview": -1, // Default, can be changed if needed
+      "max-image-preview": "large", // Default, can be changed if needed
+      "max-snippet": -1, // Default, can be changed if needed
     },
   },
   authors: [{ name: "A Trip Edukasika – Wisata Edukasi Gerabah Kasongan" }],
@@ -49,7 +48,7 @@ export const metadata: Metadata = {
     google: "nositelinkssearchbox, notranslate",
   },
   verification: {
-    google: "b00zn6M_w5XN4JRWV-DVIYfwm1cUKJ_8seN-Iy_XsSg",
+    google: "b00zn6M_w5XN4JRWV-DVIYfwm1cUKJ_8seN-Iy_XsSg", // Added Google Site Verification
   },
     generator: 'v0.dev'
 }
@@ -60,10 +59,10 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className={inter.variable}>
-      <body className={cn("min-h-screen bg-background font-inter antialiased")}>
+    <html lang="en" suppressHydrationWarning>
+      <body className={inter.className}>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
-          <LanguageProvider>{children}</LanguageProvider>
+          <LanguageProvider>{children}</LanguageProvider> {/* Added LanguageProvider */}
         </ThemeProvider>
       </body>
     </html>
