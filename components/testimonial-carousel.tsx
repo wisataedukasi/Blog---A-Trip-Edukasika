@@ -5,8 +5,13 @@ import useEmblaCarousel, { type EmblaCarouselType } from "embla-carousel-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { ArrowLeft, ArrowRight, Star, Users } from "lucide-react"
-import { useLanguage } from "./language-context" // Import useLanguage
-import type { Testimonial } from "@/lib/blog-data" // Import Testimonial type
+
+interface Testimonial {
+  name: string
+  role: string
+  content: string
+  rating: number
+}
 
 interface TestimonialCarouselProps {
   testimonials: Testimonial[]
@@ -16,7 +21,6 @@ interface TestimonialCarouselProps {
 const TWEEN_FACTOR = 1.2
 
 export function TestimonialCarousel({ testimonials }: TestimonialCarouselProps) {
-  const { t } = useLanguage() // Use the translation hook
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: "center" })
   const [prevBtnDisabled, setPrevBtnDisabled] = useState(true)
   const [nextBtnDisabled, setNextBtnDisabled] = useState(true)
@@ -100,16 +104,14 @@ export function TestimonialCarousel({ testimonials }: TestimonialCarouselProps) 
                         <Star key={i} className="h-5 w-5 text-yellow-500 fill-current" />
                       ))}
                     </div>
-                    <p className="text-gray-700 dark:text-gray-300 mb-6 italic flex-grow">
-                      "{t(testimonial.contentKey)}"
-                    </p>
+                    <p className="text-gray-700 dark:text-gray-300 mb-6 italic flex-grow">"{testimonial.content}"</p>
                     <div className="flex items-center gap-3 mt-auto">
                       <div className="w-12 h-12 bg-[#FEA62D]/10 rounded-full flex items-center justify-center">
                         <Users className="h-6 w-6 text-[#FEA62D]" />
                       </div>
                       <div>
-                        <div className="font-semibold text-gray-800 dark:text-gray-50">{t(testimonial.nameKey)}</div>
-                        <div className="text-sm text-gray-600 dark:text-gray-400">{t(testimonial.roleKey)}</div>
+                        <div className="font-semibold text-gray-800 dark:text-gray-50">{testimonial.name}</div>
+                        <div className="text-sm text-gray-600 dark:text-gray-400">{testimonial.role}</div>
                       </div>
                     </div>
                   </CardContent>
