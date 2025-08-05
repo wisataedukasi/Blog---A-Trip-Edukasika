@@ -26,15 +26,15 @@ import Link from "next/link"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { ModeToggle } from "@/components/mode-toggle"
 import { TestimonialCarousel } from "@/components/testimonial-carousel"
-import { useLanguage } from "@/components/language-context"
-import { staticBlogPosts, testimonialsData } from "@/lib/blog-data"
-import { LanguageSwitcher } from "@/components/language-switcher"
+import { useLanguage } from "@/components/language-context" // Import useLanguage
+import { staticBlogPosts, testimonialsData } from "@/lib/blog-data" // Import centralized data
+import { LanguageSwitcher } from "@/components/language-switcher" // Import LanguageSwitcher
 
 // Placeholder for blog post type (now imported from lib/blog-data)
 type BlogPost = (typeof staticBlogPosts)[0]
 
 export default function ATripEdukasikaClient() {
-  const { t, isLoading } = useLanguage() // Use the translation hook and isLoading
+  const { t } = useLanguage() // Use the translation hook
   const [formData, setFormData] = useState({
     nama: "",
     asal: "",
@@ -42,11 +42,13 @@ export default function ATripEdukasikaClient() {
     tanggal: "",
     whatsapp: "",
   })
+  const [loading, setLoading] = useState(true)
   const [latestBlogPosts, setLatestBlogPosts] = useState<BlogPost[]>([])
 
   useEffect(() => {
-    // Simulate data fetching for blog posts (if not already handled by translation loading)
+    // Simulate data fetching
     setLatestBlogPosts(staticBlogPosts.slice(0, 3)) // Get latest 3 posts
+    setLoading(false)
   }, [])
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -69,8 +71,7 @@ WhatsApp: ${formData.whatsapp}`
     })
   }
 
-  if (isLoading) {
-    // Use isLoading from LanguageContext
+  if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
         <Loader2 className="h-12 w-12 animate-spin text-[#FEA62D]" />
@@ -94,7 +95,7 @@ WhatsApp: ${formData.whatsapp}`
             />
           </Link>
           <div className="flex items-center gap-4">
-            <LanguageSwitcher />
+            <LanguageSwitcher /> {/* Language Switcher */}
             <ModeToggle />
           </div>
         </div>
