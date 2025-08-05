@@ -31,7 +31,7 @@ export default function BlogPostClientPage({ params }: { params: { slug: string 
     day: "numeric",
   })
 
-  const contentHtml = t(post.fields.contentKey) // Use translation for content
+  const contentHtml = post.fields.content
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-20">
